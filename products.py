@@ -9,7 +9,10 @@ class Product():
         else:
             self.price = price 
             self.quantity = quantity
-            self.active = active
+            if quantity != 0:
+              self.active = active
+            else:
+               self.activate = False
 
     def get_name(self):
        """
