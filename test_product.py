@@ -28,7 +28,7 @@ def test_product_quantity_modifies():
     macbooks.buy(20)
     assert macbooks.quantity == 0
 
-
+#testing that shop throws exception if more qunatity is ordered
 def test_larger_quatnity():
     with pytest.raises(Exception, match='quantity not available in stock'):
         macbooks = main.store.products.Product('mac', 10, 10)

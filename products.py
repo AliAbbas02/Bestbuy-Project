@@ -1,5 +1,5 @@
 class Product():
-    def __init__(self, name:str, price:float, quantity:int, active:bool=True):
+    def __init__(self, name:str, price:float, quantity:int = 0,active:bool=  True, promotions:list= []):
         if name == '':
             raise AttributeError('name cannot be empty string')
         else:
@@ -12,7 +12,11 @@ class Product():
             if quantity != 0:
               self.active = active
             else:
-               self.activate = False
+               self.active = False
+        if promotions == []:
+           self.promotions = []
+        else:   
+          self.promotions:list = promotions.split(',')
 
     def get_name(self):
        """
@@ -25,6 +29,12 @@ class Product():
        a setter function for name
        """
        self.name = new_name
+
+    def get_promotion(self):
+     return self.promotions
+
+    def set_promotion(self, promotion):
+     self.promotions.append(promotion)   
 
 
     def is_active(self) ->bool:
@@ -73,7 +83,10 @@ class Product():
       """
       a function that return the product details
       """
-      return f'{self.get_name()}, Price: {self.price}, Quantity: {self.quantity}'
+      if len(self.promotions) != 0:
+         return f'{self.get_name()}, Price: {self.price}, Quantity: {self.quantity}({[each_promotion.promotion for each_promotion in self.promotions]})'
+      else:
+         return f'{self.get_name()}, Price: {self.price}, Quantity: {self.quantity}'
  
     def buy(self, quantity) ->float:
       """
@@ -91,9 +104,77 @@ class Product():
         self.quantity -= quantity
         #set quantity with the new updated quantiy of product
         self.set_quantity(self.quantity)
-        #return the calculated price
-        return quantity * self.price
+        #if any promotions on product while making an instance of class
+        if len(self.promotions) > 0:
+           total:float = 0.0
+           for each_promotion in self.promotions:
+              #applying promtion  
+              total += each_promotion.apply_promotion(self, quantity)
+           return total
+        else:      
+          return quantity * self.price
+
+#class for nonstocked products      
+class NonStockedProduct(Product):
+   def __init__(self, name: str, price: float, quantity: int = 0, active: bool = True, promotions:list = []) :
+      super().__init__(name, price, quantity, promotions)
+      self.active = active
+
+   #overriding buy function for non stocked
+   def buy(self, quantity):
+      if 0 > quantity:
+         raise Exception('negative request tracked..!! please try again')
+      else:
+         #if any promotions on product
+         if len(self.promotions)> 0:
+            total:float = 0.0
+            for each_promotion in self.promotions:
+               #applying promotions
+               total += each_promotion.apply_promotion(self, quantity)
+            return total
+         else:
+            return quantity * self.price
+   #overriding show function   
+   def show(self):
+
+    return f'{self.name}, Price: {self.price}, ({[each_promotion.promotion for each_promotion in self.promotions]})'
+
+#class for limited products in store      
+class LimitedProduct(Product):
+   def __init__(self, name: str, price: float, maximum:int, quantity: int = 0, active: bool = True, promotions:list = []):
+      super().__init__(name, price, quantity, active, promotions)
+      self.maximum = maximum
+      
+   def show(self):
+    return f'{self.name}, Price: {self.price}, Quantity: {self.quantity}, Maximum: {self.maximum}'
+   
+   def buy(self, quantity):
+      if 0 > quantity:
+         raise Exception('negative request tracked..!! please try again')
+      elif quantity > self.maximum:
+         raise Exception('order over limit please try again')
+      else:
+         self.quantity -= quantity
+         #if product has any promotion
+         if len(self.promotions) > 0:
+            total:float = 0.0
+            for each_promotion in self.promotions:
+               #applying promotion
+               total += each_promotion.apply_promotion(self, quantity)
+            return total
+         else:   
+            return quantity * self.price
+    
+      
 
 
-        
+
+   
+     
+    
+
+
   
+
+      
+    

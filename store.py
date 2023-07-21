@@ -50,6 +50,7 @@ class Store():
         print(e)
         print(f'Error! cannot puchase item {product[0].name}')
         print('_' * 5)
+        #if any error occured while calculating the order made by user, make total cost 0
         total_cost = 0
         break
     return total_cost
