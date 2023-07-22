@@ -10,7 +10,6 @@ class Promotions(ABC):
   def apply_promotion(self, product, qunatity) -> float:
      pass
    
-      
 
 class SecondHalfPrice(Promotions):
    def apply_promotion(self, product, qunatity) -> float:
@@ -26,7 +25,6 @@ class SecondHalfPrice(Promotions):
       return total_price      
             
          
-
 class ThirdOneFree(Promotions):
    def apply_promotion(self, product, qunatity) -> float:
       total_price:float = 0.0

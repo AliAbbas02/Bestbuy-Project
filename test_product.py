@@ -1,6 +1,7 @@
 import pytest
 import main
 import products
+import promotions
 
 #testing if normal product is made
 def test_product_making():
@@ -33,7 +34,33 @@ def test_larger_quatnity():
     with pytest.raises(Exception, match='quantity not available in stock'):
         macbooks = main.store.products.Product('mac', 10, 10)
         assert macbooks.buy(11)
-    
+
+#testing limitedproducts
+def test_limited_quantity():
+    with pytest.raises(Exception, match='order over limit please try again'):
+        macbooks = main.store.products.LimitedProduct('mac', 10, 1, 10 )
+        assert macbooks.buy(2)         
+
+############ Promotions testing ########
+
+#secondhalfprice test
+def test_second_halfprice():
+    macbooks = products.Product('mac', 10, 10)
+    macbooks.set_promotion(promotions.SecondHalfPrice('Second Half Price'))
+    assert macbooks.buy(2) == 15
+
+#third item free test
+def test_third_item_free():
+    macbooks = products.Product('mac', 10, 10)
+    macbooks.set_promotion(promotions.ThirdOneFree('third item free'))
+    assert macbooks.buy(3) == 20
+
+#percent_discount test
+def test_thirty_percent():
+    macbooks = products.Product('mac', 10, 10)
+    macbooks.set_promotion(promotions.PercentDiscount('20 percent discount', 20))
+    assert macbooks.buy(1) == 8
+
 pytest.main()
 
 

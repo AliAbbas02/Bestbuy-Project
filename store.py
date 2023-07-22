@@ -10,6 +10,9 @@ class Store():
     """
     self.products.append(product)
 
+  def __contains__(self, item):
+    return item in self.products
+  
   def remove_product(self, product):
     """
     a function that removes a product from product list
@@ -54,6 +57,14 @@ class Store():
         total_cost = 0
         break
     return total_cost
+  #adding two stores and returning an instance for store
+  def __add__(self, store):
+    if isinstance(store, Store):
+      return Store(self.products + store.products).get_all_products()
+    
+    else:
+      raise TypeError('+ operand unsupported')
+    
         
 
 

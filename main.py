@@ -63,7 +63,7 @@ def display_products(bestway) -> None:
     a function that displays all the prodcuts to its updated quantity
     """
     for index, product in enumerate(bestway.get_all_products(), 1):
-        print(f'{index}. {product.show()}')  
+        print(f'{index}. {product}')  
 
 
 def total_amount(best_buy) -> None:
@@ -123,4 +123,23 @@ def main() -> None:
 
          
 if __name__ == '__main__':
+    # setup initial stock of inventory
+    # mac =  products.Product("MacBook Air M2", price=1450, quantity=100)
+    # bose = products.Product("Bose QuietComfort Earbuds", price=250, quantity=500)
+    # pixel = products.LimitedProduct("Google Pixel 7", price=500, quantity=250, maximum=1)
+
+    # best_buy = store.Store([mac, bose])
+    # b = store.Store([mac])
+         
+    # print(mac)               # Should print `MacBook Air M2, Price: $1450 Quantity:100`
+    # print(mac > bose)        # Should print True
+    # print(mac in best_buy)   # Should print True
+    # print(pixel in best_buy) # Should print False
+    # #combining two stores to create an instance 
+    # try:
+    #     combined_products = best_buy + b
+    #     print(f'combined store :{combined_products}')
+    # except TypeError as e:
+    #     print(e)    
+    #main function for best_buy with promotions
     main()

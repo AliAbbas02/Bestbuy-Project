@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class Product():
     def __init__(self, name:str, price:float, quantity:int = 0,active:bool=  True, promotions:list= []):
         if name == '':
@@ -79,12 +82,13 @@ class Product():
       """
       self.active = False  
 
-    def show(self):
+    def __str__(self):
       """
       a function that return the product details
       """
       if len(self.promotions) != 0:
-         return f'{self.get_name()}, Price: {self.price}, Quantity: {self.quantity}({[each_promotion.promotion for each_promotion in self.promotions]})'
+         return f'{self.get_name()}, Price: {self.price},\
+Quantity:{self.quantity}({[each_promotion.promotion for each_promotion in self.promotions]})'
       else:
          return f'{self.get_name()}, Price: {self.price}, Quantity: {self.quantity}'
  
@@ -113,10 +117,31 @@ class Product():
            return total
         else:      
           return quantity * self.price
+    #greater than >
+    def __gt__(self, other):
+       return self.price > other.price
+    #less than < 
+    def __ls__(self, other):
+       return self.price < other.price 
+    #equal to ==
+    def __eq__(self, other) -> bool:
+       return self.price == other.price
+    
+    # #property method for price
+    # @property
+    # def price(self):
+    #    return self.price
+    
+    # @price.setter
+    # def price(self, value):
+    #    if value < 0:
+    #       raise ValueError('price cannot be negative')
+          
 
 #class for nonstocked products      
 class NonStockedProduct(Product):
-   def __init__(self, name: str, price: float, quantity: int = 0, active: bool = True, promotions:list = []) :
+   def __init__(self, name: str, price: float, quantity: int = 0,\
+                 active: bool = True, promotions:list = []) :
       super().__init__(name, price, quantity, promotions)
       self.active = active
 
@@ -135,17 +160,19 @@ class NonStockedProduct(Product):
          else:
             return quantity * self.price
    #overriding show function   
-   def show(self):
+   def __str__(self):
 
-    return f'{self.name}, Price: {self.price}, ({[each_promotion.promotion for each_promotion in self.promotions]})'
+    return f'{self.name}, Price: {self.price}, \
+({[each_promotion.promotion for each_promotion in self.promotions]})'
 
 #class for limited products in store      
 class LimitedProduct(Product):
-   def __init__(self, name: str, price: float, maximum:int, quantity: int = 0, active: bool = True, promotions:list = []):
+   def __init__(self, name: str, price: float, maximum:int, quantity: int = 0,\
+                 active: bool = True, promotions:list = []):
       super().__init__(name, price, quantity, active, promotions)
       self.maximum = maximum
       
-   def show(self):
+   def __str__(self):
     return f'{self.name}, Price: {self.price}, Quantity: {self.quantity}, Maximum: {self.maximum}'
    
    def buy(self, quantity):
